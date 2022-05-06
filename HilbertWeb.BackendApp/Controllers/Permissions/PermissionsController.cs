@@ -4,6 +4,7 @@ using HilbertWeb.BackendApp.ViewModels.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HilbertWeb.BackendApp.Controllers.Permissions
 {
@@ -16,6 +17,40 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         public PermissionController(RoleManager<ApplicationRole> roleManager)
         {
             _roleManager = roleManager;
+        }
+
+        [HttpGet]
+        [Authorize(Policy = "Permissions.View")]
+        public async Task<ActionResult> Index()
+        {
+            var result = new List<PermissionViewModel>();
+            var allPermissions = new List<RoleClaimsViewModel>();
+            allPermissions.GetPermissions(Constants.Permissions.AllPermissions());
+
+            var allRoles = await _roleManager.Roles.ToListAsync();
+            foreach(var role in allRoles)
+            {
+                var model = new PermissionViewModel();
+
+                model.RoleId = role.Id;
+                model.RoleName = role.Name;
+                var claims = await _roleManager.GetClaimsAsync(role);
+                var allClaimValues = allPermissions.Select(a => a.Value).ToList();
+                var roleClaimValues = claims.Select(a => a.Value).ToList();
+                var authorizedClaims = allClaimValues.Intersect(roleClaimValues).ToList();
+                foreach (var permission in allPermissions)
+                {
+                    if (authorizedClaims.Any(a => a == permission.Value))
+                    {
+                        permission.Selected = true;
+                    }
+                }
+                model.RoleClaims = allPermissions;
+
+                result.Add(model);
+            }
+
+            return Ok(result);
         }
 
         [HttpGet]

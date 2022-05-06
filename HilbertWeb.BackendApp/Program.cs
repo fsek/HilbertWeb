@@ -37,7 +37,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 #endregion
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -65,6 +64,7 @@ if (app.Environment.IsDevelopment())
     app.UseCors();
 }
 
+//httpsredirect applied on nginx level
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 
