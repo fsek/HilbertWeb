@@ -2,11 +2,9 @@
 Test repository for potential new fsek backend
 
 ## Versions
-.NET 6 (net6.0)
-
-C# 10
-
-PostgreSQL 14
+- .NET 6 (net6.0)
+- C# 10
+- PostgreSQL 14
 
 ## Setup
 The project first requries you to clone the code and restore NuGet packages (this is done automatically in Visual Studio).
