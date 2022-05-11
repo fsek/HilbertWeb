@@ -1,8 +1,8 @@
 # HilbertWeb
 Test repository for potential new fsek backend
 
-## Versions
-- .NET 6 (net6.0)
+## Required Versions
+- .NET 6 (net6.0) w/ dotnet CLI
 - C# 10
 - PostgreSQL 14
 
