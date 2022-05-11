@@ -2,6 +2,7 @@ using HilbertWeb.BackendApp.Database;
 using HilbertWeb.BackendApp.Models;
 using HilbertWeb.BackendApp.Models.Identity;
 using HilbertWeb.BackendApp.ViewModels;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +24,13 @@ namespace HilbertWeb.BackendApp.Controllers
             _userManager = userManager;
         }
 
+        // TODO: pagination
         [HttpGet]
-        public async Task<IEnumerable<NewsPost>> Get()
+        public async Task<ActionResult<IEnumerable<NewsPostViewModel>>> Get()
         {
-            return await _db.NewsPosts.Include(news => news.Author).OrderByDescending(x => x.Created).ToListAsync();
+            var news = await _db.NewsPosts.Include(news => news.Author).OrderByDescending(x => x.Created).ToListAsync();
+
+            return Ok(news.Adapt<List<NewsPostViewModel>>());
         }
 
         [HttpGet]
@@ -53,7 +57,7 @@ namespace HilbertWeb.BackendApp.Controllers
             _db.NewsPosts.Add(news);
             await _db.SaveChangesAsync();
 
-            return Ok();
+            return Created("/", news);
         }
 
         [HttpPut]

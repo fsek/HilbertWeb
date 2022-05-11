@@ -18,9 +18,11 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         {
             _roleManager = roleManager;
         }
+        
 
+        // TODO: not working lmao
         [HttpGet]
-        [Authorize(Policy = "Permissions.View")]
+        [Authorize(Policy = "Permissions.Permissions.View")]
         public async Task<ActionResult> Index()
         {
             var result = new List<PermissionViewModel>();
@@ -54,7 +56,7 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         }
 
         [HttpGet]
-        [Authorize(Policy = "Permissions.View")]
+        [Authorize(Policy = "Permissions.Permissions.View")]
         [Route("{roleId}")]
         public async Task<ActionResult> Index(int roleId)
         {
@@ -79,7 +81,7 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         }
 
         [HttpPost]
-        [Authorize(Policy = "Permissions.Edit")]
+        [Authorize(Policy = "Permissions.Permissions.Edit")]
         public async Task<IActionResult> Update(PermissionViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.RoleId.ToString());

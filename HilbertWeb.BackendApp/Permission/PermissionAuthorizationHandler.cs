@@ -12,7 +12,7 @@ namespace HilbertWeb.BackendApp.Permission
                 return Task.CompletedTask;
             }
             var permissions = context.User.Claims.Where(x => x.Type == "Permission" &&
-                                                                x.Value == $"Permissions.{requirement.Permission}" &&
+                                                                x.Value == $"{requirement.Permission}" &&
                                                                 x.Issuer == "LOCAL AUTHORITY");
 
             if (permissions.Any())

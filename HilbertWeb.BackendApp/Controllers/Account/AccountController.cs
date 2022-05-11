@@ -1,4 +1,6 @@
 ﻿using HilbertWeb.BackendApp.Models.Identity;
+using HilbertWeb.BackendApp.ViewModels;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,16 +10,17 @@ namespace HilbertWeb.BackendApp.Controllers.Account;
 [ApiController]
 public class AccountController : ControllerBase
 {
-    private ILogger _logger;
     private UserManager<ApplicationUser> _userManager;
+    private RoleManager<ApplicationRole> _roleManager;
+    private ILogger _logger;
 
-    public AccountController(UserManager<ApplicationUser> userManager, ILogger<AuthenticationController> logger)
+    public AccountController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ILogger<AuthenticationController> logger)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
         _logger = logger;
     }
 
-    // TODO: fix this shit
     /// <summary>
     /// Gets info about current user
     /// </summary>
@@ -30,9 +33,13 @@ public class AccountController : ControllerBase
         if (currentUser == null)
             return Ok();
 
-        return Ok(new {
-            LoggedIn = true,
-            Email = currentUser.Email
-        });
+        var dto = currentUser.Adapt<AdvancedUserViewModel>();
+
+        // gets claim values from roleclaims from role from userroles :)
+        var claims = currentUser.UserRoles.Select(x => x.Role).SelectMany(x => x.RoleClaims).Select(x => x.ClaimValue);
+
+        dto.Permissions = claims.ToHashSet().ToList(); // this is stupid... but I think its fast
+
+        return Ok(dto);
     }
 }

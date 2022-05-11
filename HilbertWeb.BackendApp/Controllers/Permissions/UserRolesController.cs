@@ -20,12 +20,9 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         }
 
         [HttpGet]
+        [Route("{email}")]
         public async Task<IActionResult> Index(string email)
         {
-            await Database.Seeds.DefaultRoles.SeedAsync(_userManager, _roleManager);
-            await Database.Seeds.DefaultUsers.SeedSuperAdminAsync(_userManager, _roleManager);
-            await Database.Seeds.DefaultUsers.SeedBasicUserAsync(_userManager, _roleManager);
-
             var viewModel = new List<UserRolesViewModel>();
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -73,7 +70,6 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
             result = await _userManager.AddToRolesAsync(user, model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
             var currentUser = await _userManager.GetUserAsync(User);
             await _signInManager.RefreshSignInAsync(currentUser);
-            await Database.Seeds.DefaultUsers.SeedSuperAdminAsync(_userManager, _roleManager);
             return Ok(new { userId = id });
         }
     }

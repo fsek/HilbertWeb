@@ -3,6 +3,7 @@ using System;
 using HilbertWeb.BackendApp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HilbertWeb.BackendApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220509230057_AddUserNames")]
+    partial class AddUserNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,30 +51,6 @@ namespace HilbertWeb.BackendApp.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRoleClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", b =>
@@ -150,85 +128,6 @@ namespace HilbertWeb.BackendApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserRole", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserToken", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
-
             modelBuilder.Entity("HilbertWeb.BackendApp.Models.NewsPost", b =>
                 {
                     b.Property<int>("Id")
@@ -261,67 +160,107 @@ namespace HilbertWeb.BackendApp.Migrations
                     b.ToTable("NewsPosts");
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", "Role")
-                        .WithMany("RoleClaims")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Navigation("Role");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserClaim", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", "User")
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Navigation("User");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserLogin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", "User")
-                        .WithMany("Logins")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
 
-                    b.Navigation("User");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
 
-                    b.Navigation("Role");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.Navigation("User");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUserToken", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.Navigation("User");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("HilbertWeb.BackendApp.Models.NewsPost", b =>
@@ -335,22 +274,55 @@ namespace HilbertWeb.BackendApp.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.Navigation("RoleClaims");
-
-                    b.Navigation("UserRoles");
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.Navigation("Claims");
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Logins");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Tokens");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("UserRoles");
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
