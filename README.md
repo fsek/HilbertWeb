@@ -3,7 +3,9 @@ Test repository for potential new fsek backend
 
 ## Versions
 .NET 6 (net6.0)
+
 C# 10
+
 PostgreSQL 14
 
 ## Setup
@@ -33,4 +35,5 @@ https://code.visualstudio.com/docs/languages/dotnet
 
 ## TODO, this shouldnt be here
 Move viewmodels to other project
+
 move auth to other project
