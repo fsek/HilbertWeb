@@ -27,7 +27,7 @@ namespace HilbertWeb.BackendApp.Controllers
         public async Task<IActionResult> Index()
         {
             var allUsers = await _userManager.Users.ToListAsync();
-            return Ok(allUsers);
+            return Ok(allUsers.Adapt<UserViewModel[]>());
         }
 
         [HttpGet]

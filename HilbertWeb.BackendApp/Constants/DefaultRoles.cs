@@ -3,6 +3,6 @@
     public enum DefaultRoles
     {
         Superman,
-        Pleb
+        UnionMember
     }
 }

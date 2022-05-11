@@ -25,7 +25,10 @@ builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProv
 builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services
-    .AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddIdentity<ApplicationUser, ApplicationRole>(options => {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Password.RequireNonAlphanumeric = false;
+    })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
@@ -71,5 +74,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+#region Seeding
+#if DEBUG
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+
+    await HilbertWeb.BackendApp.Database.Seeds.DefaultRoles.SeedAsync(userManager, roleManager);
+    await HilbertWeb.BackendApp.Database.Seeds.DefaultUsers.SeedBasicUserAsync(userManager, roleManager);
+    await HilbertWeb.BackendApp.Database.Seeds.DefaultUsers.SeedSuperAdminAsync(userManager, roleManager);
+}
+#endif
+#endregion
 
 app.Run();

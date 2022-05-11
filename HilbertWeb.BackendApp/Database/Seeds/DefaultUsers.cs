@@ -11,50 +11,63 @@ public static class DefaultUsers
     {
         var defaultUser = new ApplicationUser
         {
-            UserName = "basicuser@gmail.com",
-            Email = "basicuser@gmail.com",
-            EmailConfirmed = true
+            FirstName = "Spindel",
+            LastName = "Man",
+            UserName = "spindelman@fsektionen.se",
+            Email = "spindelman@fsektionen.se",
+            EmailConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString()
         };
         if (userManager.Users.All(u => u.Id != defaultUser.Id))
         {
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "123Pa$$word!");
-                await userManager.AddToRoleAsync(defaultUser, Constants.DefaultRoles.Superman.ToString());
+                var result = await userManager.CreateAsync(defaultUser, "Password123");
+                await userManager.AddToRoleAsync(defaultUser, Constants.DefaultRoles.UnionMember.ToString());
             }
+            await roleManager.SeedClaimsForBasicUser();
         }
     }
     public static async Task SeedSuperAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
     {
         var defaultUser = new ApplicationUser
         {
-            UserName = "superadmin@gmail.com",
-            Email = "superadmin@gmail.com",
-            EmailConfirmed = true
+            FirstName = "Hilbert",
+            LastName = "Admin-Älg",
+            UserName = "admin@fsektionen.se",
+            Email = "admin@fsektionen.se",
+            EmailConfirmed = true,
+            SecurityStamp = Guid.NewGuid().ToString()
         };
         if (userManager.Users.All(u => u.Id != defaultUser.Id))
         {
             var user = await userManager.FindByEmailAsync(defaultUser.Email);
             if (user == null)
             {
-                await userManager.CreateAsync(defaultUser, "123Pa$$word!");
+                await userManager.CreateAsync(defaultUser, "Password123");
                 await userManager.AddToRoleAsync(defaultUser, Constants.DefaultRoles.Superman.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Constants.DefaultRoles.Pleb.ToString());
+                await userManager.AddToRoleAsync(defaultUser, Constants.DefaultRoles.UnionMember.ToString());
             }
             await roleManager.SeedClaimsForSuperAdmin();
         }
     }
+    private async static Task SeedClaimsForBasicUser(this RoleManager<ApplicationRole> roleManager)
+    {
+        var adminRole = await roleManager.FindByNameAsync(Constants.DefaultRoles.Superman.ToString());
+        await roleManager.AddPermissionClaims(adminRole, Permissions.GeneratePermissionsForModule("News"));
+    }
+
     private async static Task SeedClaimsForSuperAdmin(this RoleManager<ApplicationRole> roleManager)
     {
         var adminRole = await roleManager.FindByNameAsync(Constants.DefaultRoles.Superman.ToString());
-        await roleManager.AddPermissionClaim(adminRole, "News");
+        await roleManager.AddPermissionClaims(adminRole, Permissions.AllPermissions());
     }
-    public static async Task AddPermissionClaim(this RoleManager<ApplicationRole> roleManager, ApplicationRole role, string module)
+
+    public static async Task AddPermissionClaims(this RoleManager<ApplicationRole> roleManager, ApplicationRole role, List<string> permissions)
     {
         var allClaims = await roleManager.GetClaimsAsync(role);
-        var allPermissions = Permissions.GeneratePermissionsForModule(module);
-        foreach (var permission in allPermissions)
+        foreach (var permission in permissions)
         {
             if (!allClaims.Any(a => a.Type == "Permission" && a.Value == permission))
             {
