@@ -28,16 +28,18 @@ namespace HilbertWeb.BackendApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NewsPostViewModel>>> Get()
         {
-            var news = await _db.NewsPosts.Include(news => news.Author).OrderByDescending(x => x.Created).ToListAsync();
+            var newsPostList = await _db.NewsPosts.Include(news => news.Author).OrderByDescending(x => x.Created).ToListAsync();
 
-            return Ok(news.Adapt<List<NewsPostViewModel>>());
+            return Ok(newsPostList.Adapt<List<NewsPostViewModel>>());
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult> Get(int id)
         {
-            return Ok(await _db.NewsPosts.Where(x => x.Id == id).ToListAsync());
+            var newsPost = await _db.NewsPosts.Where(x => x.Id == id).Include(news => news.Author).FirstOrDefaultAsync();
+
+            return Ok(newsPost.Adapt<NewsPostViewModel>());
         }
 
         [HttpPost]
@@ -49,7 +51,7 @@ namespace HilbertWeb.BackendApp.Controllers
             {
                 Title = model.Title,
                 Content = model.Content,
-                Author = currentUser,
+                AuthorId = currentUser.Id,
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow,
             };
@@ -57,7 +59,7 @@ namespace HilbertWeb.BackendApp.Controllers
             _db.NewsPosts.Add(news);
             await _db.SaveChangesAsync();
 
-            return Created("/", news);
+            return Created("/", news.Adapt<NewsPostViewModel>());
         }
 
         [HttpPut]

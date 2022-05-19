@@ -8,5 +8,5 @@ public class ManageNewsViewModel
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
     public DateTime? Pinned { get; set; }
-    public UserViewModel Author { get; set; }
+    public UserViewModel? Author { get; set; }
 }
