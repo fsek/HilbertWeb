@@ -1,6 +1,6 @@
-﻿namespace HilbertWeb.BackendApp.ViewModels.Permissions
+﻿namespace HilbertWeb.BackendApp.Dto.Permissions
 {
-    public class RoleClaimsViewModel
+    public class RoleClaimsDto
     {
         public string Type { get; set; } = "";
         public string Value { get; set; } = "";

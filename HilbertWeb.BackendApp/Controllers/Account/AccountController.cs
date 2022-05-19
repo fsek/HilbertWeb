@@ -1,5 +1,5 @@
 ﻿using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels;
+using HilbertWeb.BackendApp.Dto;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +33,7 @@ public class AccountController : ControllerBase
         if (currentUser == null)
             return Ok();
 
-        var dto = currentUser.Adapt<AdvancedUserViewModel>();
+        var dto = currentUser.Adapt<AdvancedUserDto>();
 
         // gets claim values from roleclaims from role from userroles :)
         var claims = currentUser.UserRoles.Select(x => x.Role).SelectMany(x => x.RoleClaims).Select(x => x.ClaimValue);

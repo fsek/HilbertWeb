@@ -1,5 +1,5 @@
 ﻿using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels;
+using HilbertWeb.BackendApp.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("api/authentication/login")]
-    public async Task<ActionResult> Signin([FromBody] LoginViewModel model, [FromQuery] string? returnUrl = null)
+    public async Task<ActionResult> Signin([FromBody] LoginDto model, [FromQuery] string? returnUrl = null)
     {
         returnUrl ??= Url.Content("/");
         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
@@ -50,7 +50,7 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("api/authentication/register")]
-    public async Task<ActionResult> Register([FromBody] LoginViewModel model, [FromQuery] string? returnUrl = null)
+    public async Task<ActionResult> Register([FromBody] LoginDto model, [FromQuery] string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
         var user = new ApplicationUser { UserName = model.Email, Email = model.Email };

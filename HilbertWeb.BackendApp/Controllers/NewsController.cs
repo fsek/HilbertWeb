@@ -1,7 +1,7 @@
 using HilbertWeb.BackendApp.Database;
 using HilbertWeb.BackendApp.Models;
 using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels;
+using HilbertWeb.BackendApp.Dto;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +26,11 @@ namespace HilbertWeb.BackendApp.Controllers
 
         // TODO: pagination
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<NewsPostViewModel>>> Get()
+        public async Task<ActionResult<IEnumerable<NewsPostDto>>> Get()
         {
             var newsPostList = await _db.NewsPosts.Include(news => news.Author).OrderByDescending(x => x.Created).ToListAsync();
 
-            return Ok(newsPostList.Adapt<List<NewsPostViewModel>>());
+            return Ok(newsPostList.Adapt<List<NewsPostDto>>());
         }
 
         [HttpGet]
@@ -38,12 +38,14 @@ namespace HilbertWeb.BackendApp.Controllers
         public async Task<ActionResult> Get(int id)
         {
             var newsPost = await _db.NewsPosts.Where(x => x.Id == id).Include(news => news.Author).FirstOrDefaultAsync();
+            if (newsPost == null)
+                return Unauthorized(); // dont let them know it dosent exist
 
-            return Ok(newsPost.Adapt<NewsPostViewModel>());
+            return Ok(newsPost.Adapt<NewsPostDto>());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(ManageNewsViewModel model)
+        public async Task<IActionResult> Post(ManageNewsDto model)
         {
             var currentUser = await _userManager.GetUserAsync(User);
 
@@ -59,11 +61,11 @@ namespace HilbertWeb.BackendApp.Controllers
             _db.NewsPosts.Add(news);
             await _db.SaveChangesAsync();
 
-            return Created("/", news.Adapt<NewsPostViewModel>());
+            return Created("/", news.Adapt<NewsPostDto>());
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ManageNewsViewModel model)
+        public async Task<IActionResult> Update(ManageNewsDto model)
         {
             var news = _db.NewsPosts.Where(x => x.Id == model.Id).FirstOrDefault();
             if (news == null)
@@ -79,7 +81,7 @@ namespace HilbertWeb.BackendApp.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(ManageNewsViewModel model)
+        public async Task<IActionResult> Delete(ManageNewsDto model)
         {
             var news = _db.NewsPosts.Where(x => x.Id == model.Id).FirstOrDefault();
             if (news == null)

@@ -2,7 +2,7 @@ using HilbertWeb.BackendApp.Database;
 using HilbertWeb.BackendApp.Database.Seeds;
 using HilbertWeb.BackendApp.Models;
 using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels;
+using HilbertWeb.BackendApp.Dto;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +27,7 @@ namespace HilbertWeb.BackendApp.Controllers
         public async Task<IActionResult> Index()
         {
             var allUsers = await _userManager.Users.ToListAsync();
-            return Ok(allUsers.Adapt<UserViewModel[]>());
+            return Ok(allUsers.Adapt<UserDto[]>());
         }
 
         [HttpGet]
@@ -41,7 +41,7 @@ namespace HilbertWeb.BackendApp.Controllers
                 return BadRequest();
             }
 
-            return Ok(user.Adapt<UserViewModel>());
+            return Ok(user.Adapt<UserDto>());
         }
     }
 }

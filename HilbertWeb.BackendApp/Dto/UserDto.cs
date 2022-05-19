@@ -1,8 +1,8 @@
-﻿using HilbertWeb.BackendApp.ViewModels.Permissions;
+﻿using HilbertWeb.BackendApp.Dto.Permissions;
 
-namespace HilbertWeb.BackendApp.ViewModels;
+namespace HilbertWeb.BackendApp.Dto;
 
-public class UserViewModel
+public class UserDto
 {
     public int Id { get; set; }
     public string Email { get; set; }

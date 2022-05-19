@@ -1,6 +1,6 @@
-﻿namespace HilbertWeb.BackendApp.ViewModels;
+﻿namespace HilbertWeb.BackendApp.Dto;
 
-public class ManageNewsViewModel
+public class ManageNewsDto
 {
     public int Id { get; set; }
     public string Title { get; set; }
@@ -8,5 +8,5 @@ public class ManageNewsViewModel
     public DateTime Created { get; set; }
     public DateTime Updated { get; set; }
     public DateTime? Pinned { get; set; }
-    public UserViewModel? Author { get; set; }
+    public UserDto? Author { get; set; }
 }

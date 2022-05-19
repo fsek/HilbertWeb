@@ -1,6 +1,6 @@
 using HilbertWeb.BackendApp.Helpers;
 using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels.Permissions;
+using HilbertWeb.BackendApp.Dto.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +25,14 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         [Authorize(Policy = "Permissions.Permissions.View")]
         public async Task<ActionResult> Index()
         {
-            var result = new List<PermissionViewModel>();
-            var allPermissions = new List<RoleClaimsViewModel>();
+            var result = new List<PermissionDto>();
+            var allPermissions = new List<RoleClaimsDto>();
             allPermissions.GetPermissions(Constants.Permissions.AllPermissions());
 
             var allRoles = await _roleManager.Roles.ToListAsync();
             foreach(var role in allRoles)
             {
-                var model = new PermissionViewModel();
+                var model = new PermissionDto();
 
                 model.RoleId = role.Id;
                 model.RoleName = role.Name;
@@ -60,8 +60,8 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         [Route("{roleId}")]
         public async Task<ActionResult> Index(int roleId)
         {
-            var model = new PermissionViewModel();
-            var allPermissions = new List<RoleClaimsViewModel>();
+            var model = new PermissionDto();
+            var allPermissions = new List<RoleClaimsDto>();
             allPermissions.GetPermissions(Constants.Permissions.AllPermissions());
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             model.RoleId = roleId;
@@ -82,7 +82,7 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
 
         [HttpPost]
         [Authorize(Policy = "Permissions.Permissions.Edit")]
-        public async Task<IActionResult> Update(PermissionViewModel model)
+        public async Task<IActionResult> Update(PermissionDto model)
         {
             var role = await _roleManager.FindByIdAsync(model.RoleId.ToString());
             var claims = await _roleManager.GetClaimsAsync(role);

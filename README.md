@@ -32,6 +32,6 @@ https://code.visualstudio.com/docs/languages/dotnet
 2. When installed, set default password to dablord1337 (we will probably add this to a non-versioned file instead in future so you can set your own pass :))
 
 ## TODO, this shouldnt be here
-Move viewmodels to other project
+Move Dto to other project
 
 move auth to other project

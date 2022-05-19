@@ -1,5 +1,5 @@
 using HilbertWeb.BackendApp.Models.Identity;
-using HilbertWeb.BackendApp.ViewModels.Permissions;
+using HilbertWeb.BackendApp.Dto.Permissions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,26 +23,26 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         [Route("{email}")]
         public async Task<IActionResult> Index(string email)
         {
-            var viewModel = new List<UserRolesViewModel>();
+            var Dto = new List<UserRolesDto>();
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
                 return BadRequest("User not found.");
 
             foreach (var role in _roleManager.Roles.ToList())
             {
-                var userRolesViewModel = new UserRolesViewModel
+                var userRolesDto = new UserRolesDto
                 {
                     RoleName = role.Name
                 };
                 if (await _userManager.IsInRoleAsync(user, role.Name))
                 {
-                    userRolesViewModel.Selected = true;
+                    userRolesDto.Selected = true;
                 }
                 else
                 {
-                    userRolesViewModel.Selected = false;
+                    userRolesDto.Selected = false;
                 }
-                viewModel.Add(userRolesViewModel);
+                Dto.Add(userRolesDto);
             }
 
             // TODO: make sure to set smaller validation interval like 10 minutes:
@@ -52,17 +52,17 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
             // this logs out the user next time its cookie needs to be validated
             await _userManager.UpdateSecurityStampAsync(user); 
 
-            var model = new ManageUserRolesViewModel()
+            var model = new ManageUserRolesDto()
             {
                 UserId = user.Id,
                 Email = user.Email,
-                UserRoles = viewModel
+                UserRoles = Dto
             };
             return Ok(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(string id, ManageUserRolesViewModel model)
+        public async Task<IActionResult> Update(string id, ManageUserRolesDto model)
         {
             var user = await _userManager.FindByIdAsync(id);
             var roles = await _userManager.GetRolesAsync(user);
