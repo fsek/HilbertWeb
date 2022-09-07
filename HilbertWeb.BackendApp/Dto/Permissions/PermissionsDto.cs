@@ -1,4 +1,4 @@
-﻿namespace HilbertWeb.BackendApp.Dtos.Permissions
+﻿namespace HilbertWeb.BackendApp.Dto.Permissions
 {
     public class PermissionDto
     {

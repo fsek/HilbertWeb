@@ -1,6 +1,8 @@
 using HilbertWeb.BackendApp.Database;
+using HilbertWeb.BackendApp.Dto.Permissions;
 using HilbertWeb.BackendApp.Models;
 using HilbertWeb.BackendApp.Models.Identity;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +24,7 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
         public async Task<IActionResult> Index()
         {
             var roles = await _roleManager.Roles.ToListAsync();
-            return Ok(roles);
+            return Ok(roles.Adapt<List<RolesDto>>());
         }
 
         [HttpPost]

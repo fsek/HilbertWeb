@@ -35,3 +35,9 @@ https://code.visualstudio.com/docs/languages/dotnet
 Move Dto to other project
 
 move auth to other project
+
+## Make new API Endpoint
+1. Create database model
+2. Create Api Controller
+3. Create DTO
+4. Profit

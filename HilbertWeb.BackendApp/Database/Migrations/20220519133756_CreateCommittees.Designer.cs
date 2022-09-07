@@ -3,6 +3,7 @@ using System;
 using HilbertWeb.BackendApp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HilbertWeb.BackendApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519133756_CreateCommittees")]
+    partial class CreateCommittees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +52,6 @@ namespace HilbertWeb.BackendApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CommitteeId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -66,8 +65,6 @@ namespace HilbertWeb.BackendApp.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CommitteeId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -286,17 +283,6 @@ namespace HilbertWeb.BackendApp.Migrations
                     b.ToTable("NewsPosts");
                 });
 
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", b =>
-                {
-                    b.HasOne("HilbertWeb.BackendApp.Models.Committee", "Committee")
-                        .WithMany("Roles")
-                        .HasForeignKey("CommitteeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Committee");
-                });
-
             modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRoleClaim", b =>
                 {
                     b.HasOne("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", "Role")
@@ -369,11 +355,6 @@ namespace HilbertWeb.BackendApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("HilbertWeb.BackendApp.Models.Committee", b =>
-                {
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("HilbertWeb.BackendApp.Models.Identity.ApplicationRole", b =>

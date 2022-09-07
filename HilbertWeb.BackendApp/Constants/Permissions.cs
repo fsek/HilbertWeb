@@ -6,7 +6,8 @@
         {
             "News",
             "Users",
-            "Permissions"
+            "Permissions",
+            "Committees"
         };
 
         public static List<string> GeneratePermissionsForModule(string module)

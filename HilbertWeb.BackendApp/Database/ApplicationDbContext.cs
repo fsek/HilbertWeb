@@ -13,6 +13,7 @@ public class ApplicationDbContext
         ApplicationRoleClaim, ApplicationUserToken>
 {
     public DbSet<NewsPost> NewsPosts { get; set; } = null!; // null! tells the compiler to shut up about NewsPosts being null
+    public DbSet<Committee> Committees { get; set; } = null!; // null! tells the compiler to shut up about NewsPosts being null
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -63,6 +64,7 @@ public class ApplicationDbContext
                 .WithOne(e => e.Role)
                 .HasForeignKey(rc => rc.RoleId)
                 .IsRequired();
+
         });
 
         // Say to EF Core that we want these "navigation properties" to always be included (always fetched from SQL) when we load them
