@@ -32,7 +32,6 @@ public class AuthenticationController : ControllerBase
 
         if (result.Succeeded)
         {
-            _logger.LogDebug("User account locked out.");
             return Ok(returnUrl);
         }
         if (result.IsLockedOut)
@@ -43,7 +42,7 @@ public class AuthenticationController : ControllerBase
         else
         {
             _logger.LogWarning("Unknown login failure.");
-            return BadRequest(403);
+            return StatusCode(403);
         }
     }
 
