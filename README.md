@@ -30,7 +30,7 @@ https://code.visualstudio.com/docs/languages/dotnet
  - macOS: https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql-macos/
  - Linux: https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql-linux/
 2. When installed, set default password to dablord1337 (we will probably add this to a non-versioned file instead in future so you can set your own pass :))
-3. To create the schema you should be able to run `dotnet ef database update`
+3. To create the schema you should be able to run `dotnet ef database update` in the directory HilbertWeb.BackendApp
 
 ## TODO, this shouldnt be here
 Move Dto to other project
