@@ -9,29 +9,30 @@ using Microsoft.EntityFrameworkCore;
 namespace HilbertWeb.BackendApp.Controllers.Permissions
 {
     [ApiController]
-    [Route("api/permissions/permission")]
-    public class PermissionController : Controller
+    [Route("api/permissions/abilities")]
+    public class AbilitesController : Controller
     {
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public PermissionController(RoleManager<ApplicationRole> roleManager)
+        public AbilitesController(RoleManager<ApplicationRole> roleManager)
         {
             _roleManager = roleManager;
         }
         
 
-        // TODO: not working lmao
+        // TODONE: working lmao
         [HttpGet]
         [Authorize(Policy = "Permissions.Permissions.View")]
         public async Task<ActionResult> Index()
         {
             var result = new List<PermissionDto>();
-            var allPermissions = new List<RoleClaimsDto>();
-            allPermissions.GetPermissions(Constants.Permissions.AllPermissions());
+
 
             var allRoles = await _roleManager.Roles.ToListAsync();
             foreach(var role in allRoles)
             {
+                var allPermissions = new List<RoleClaimsDto>();
+                allPermissions.GetPermissions(Constants.Permissions.AllPermissions());
                 var model = new PermissionDto();
 
                 model.RoleId = role.Id;
@@ -45,6 +46,9 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
                     if (authorizedClaims.Any(a => a == permission.Value))
                     {
                         permission.Selected = true;
+                    } else
+                    {
+                        permission.Selected = false;
                     }
                 }
                 model.RoleClaims = allPermissions;

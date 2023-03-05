@@ -38,5 +38,21 @@ namespace HilbertWeb.BackendApp.Controllers.Permissions
 
             return BadRequest();
         }
+
+        [HttpDelete]
+        [Route("{roleId}")]
+        public async Task<IActionResult> DeleteRole(String roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role != null)
+            {
+                var result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
     }
 }
