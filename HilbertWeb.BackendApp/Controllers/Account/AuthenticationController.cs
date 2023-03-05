@@ -49,17 +49,18 @@ public class AuthenticationController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("api/authentication/register")]
-    public async Task<ActionResult> Register([FromBody] LoginDto model, [FromQuery] string? returnUrl = null)
+    public async Task<ActionResult> Register([FromBody] RegisterDto model, [FromQuery] string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
-        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+        var user = new ApplicationUser { FirstName = model.FirstName, LastName = model.LastName, 
+                                         UserName = model.Email, Email = model.Email, EmailConfirmed = true };
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
         {
             // new account log
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
             //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
             //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
