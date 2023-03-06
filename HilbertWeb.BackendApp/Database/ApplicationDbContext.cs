@@ -1,5 +1,6 @@
 ﻿using HilbertWeb.BackendApp.Models;
 using HilbertWeb.BackendApp.Models.Identity;
+using HilbertWeb.BackendApp.Models.Event;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
