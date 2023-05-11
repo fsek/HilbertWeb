@@ -16,7 +16,12 @@ Then the database needs to be setup, we use a PostgreSQL database
 3. Open Solution
 4. Build -> Build Solution, it should automatically restore NuGet pacakages
 
-#### Setup Linux
+#### "Unable to find package" when building solution
+1. Go to *Tools > Nuget Package Manager > Package Manager Setting*
+2. Go to *Package sources*
+3. Add new package source with name *nuget.org* (for example) and source *https://api.nuget.org/v3/index.json*
+
+### Setup Linux
 https://code.visualstudio.com/docs/languages/dotnet
 1. Install dotnet CLI
 2. `git clone https://github.com/fsek/HilbertWeb.git`
