@@ -15,6 +15,7 @@ Then the database needs to be setup, we use a PostgreSQL database
 2. `git clone https://github.com/fsek/HilbertWeb.git`
 3. Open Solution
 4. Build -> Build Solution, it should automatically restore NuGet pacakages
+5. Debug -> Start Debugging
 
 #### "Unable to find package" when building solution
 1. Go to *Tools > Nuget Package Manager > Package Manager Setting*
@@ -36,6 +37,7 @@ https://code.visualstudio.com/docs/languages/dotnet
  - Linux: https://www.postgresqltutorial.com/postgresql-getting-started/install-postgresql-linux/
 2. When installed, set default password to dablord1337 (we will probably add this to a non-versioned file instead in future so you can set your own pass :))
 3. To create the schema you should be able to run `dotnet ef database update` in the directory HilbertWeb.BackendApp
+ - If you do not have `dotnet ef` installed you can install it globally by running `dotnet tool install --global dotnet-ef`
 
 ## TODO, this shouldnt be here
 Move Dto to other project
